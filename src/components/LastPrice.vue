@@ -4,7 +4,23 @@
     'small-mobile-price': isMobileSM,
     'xs-mobile-price': isMobileXS
   }]">
-    {{ formattedPrice }} <span class="price-arrow" v-if="priceChangeClass === 'price-up'">↑</span>
+    {{ formattedPrice }} 
+    <span class="price-arrow" v-if="priceChangeClass === 'price-up'">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" 
+           fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" 
+           stroke-linejoin="round" class="arrow-icon">
+        <line x1="12" y1="19" x2="12" y2="5"></line>
+        <polyline points="5 12 12 5 19 12"></polyline>
+      </svg>
+    </span>
+    <span class="price-arrow" v-if="priceChangeClass === 'price-down'">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" 
+           fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" 
+           stroke-linejoin="round" class="arrow-icon">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <polyline points="19 12 12 19 5 12"></polyline>
+      </svg>
+    </span>
   </div>
 </template>
 
@@ -43,10 +59,15 @@ const priceChangeClass = computed(() => {
 .last-price {
   padding: 5px 10px;
   border-radius: 4px;
-  display: inline-block;
+  display: inline-flex; /* 改為 inline-flex */
+  align-items: center; /* 確保內容垂直居中 */
+  justify-content: center; /* 水平居中內容 */
   font-weight: bold;
   font-size: 16px;
   transition: background-color 0.3s ease;
+  background-color: #0F1622; /* 添加背景色 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加陰影增強視覺分離 */
+  margin: 2px 0; /* 添加一些垂直空間 */
 }
 
 .price-up {
@@ -63,13 +84,22 @@ const priceChangeClass = computed(() => {
 
 .price-arrow {
   margin-left: 3px;
+  display: inline-flex; 
+  align-items: center;
+  vertical-align: middle;
+}
+
+.arrow-icon {
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
 }
 
 /* 平板裝置樣式 */
 @media (max-width: 992px) {
   .last-price {
-    font-size: 15px;
-    padding: 4px 8px;
+    padding: 6px 12px; 
+    margin: 4px 0;
   }
 }
 

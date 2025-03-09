@@ -50,7 +50,7 @@ export function useOrderBookWebSocket() {
           const data = JSON.parse(event.data);
 
           // 記錄接收到的數據，用於調整
-          console.log('收到訂單簿WebSocket數據:', data);
+          // console.log('收到訂單簿WebSocket數據:', data);
 
           // 檢查是否有錯誤消息
           if (data.severity === 'ERROR') {
@@ -125,7 +125,8 @@ export function useOrderBookWebSocket() {
           }
 
           // 處理交易歷史數據，獲取最新價格
-          if (data.topic && data.topic.includes('tradeHistoryApi:')) {
+          console.log('data.topic', data.topic)
+          if (data.topic && data.topic.includes('tradeHistoryApi')) {
             handlePriceUpdate(data);
           }
         } catch (err) {
@@ -218,7 +219,7 @@ export function useOrderBookWebSocket() {
       // 處理更新的數據
       // 檢查序列號是否吻合
       if (data.prevSeqNum !== orderBookData.value.seqNum) {
-        console.warn('序列號不合，重新訂閱獲取完整快照');
+        // console.warn('序列號不合，重新訂閱獲取完整快照');
         // 重新訂閱以獲取新的快照
         if (orderBookSocket.value) {
           const resubscribeMsg = JSON.stringify({
@@ -358,16 +359,19 @@ export function useOrderBookWebSocket() {
   const handlePriceUpdate = (data: any) => {
     console.log('處理價格更新:', data);
 
-    // 按照文件，檢查data是否直接是交易 Array 
-    if (Array.isArray(data.data) && data.data.length > 0) {
-      // 使用第一筆交易的價格作為最新價格
-      const newPrice = data.data[0].price;
-      console.log('提取到新價格:', newPrice);
+    // 檢查 topic 是否只是 "tradeHistoryApi"，而不是 "tradeHistoryApi:BTCPFC"
+    if (data.topic && (data.topic === 'tradeHistoryApi' || data.topic.includes('tradeHistoryApi:'))) {
+      // 按照文件，檢查data是否直接是交易 Array 
+      if (Array.isArray(data.data) && data.data.length > 0) {
+        // 使用第一筆交易的價格作為最新價格
+        const newPrice = data.data[0].price;
+        console.log('提取到新價格:', newPrice);
 
-      previousLastPrice.value = lastPrice.value;
-      lastPrice.value = newPrice;
-    } else {
-      console.warn('未找到有效的交易數據:', data);
+        previousLastPrice.value = lastPrice.value;
+        lastPrice.value = newPrice;
+      } else {
+        console.warn('未找到有效的交易數據:', data);
+      }
     }
   };
 
