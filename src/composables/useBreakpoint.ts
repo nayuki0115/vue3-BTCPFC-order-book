@@ -1,10 +1,9 @@
-// src/composables/useBreakpoint.ts
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { breakpoints } from '@/utils/breakpoints';
 
 export function useBreakpoint() {
   const windowWidth = ref(window.innerWidth);
-  
+
   const handleResize = () => {
     windowWidth.value = window.innerWidth;
   };

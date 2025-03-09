@@ -46,7 +46,6 @@ interface OrderBookLevel {
 interface Props {
   level: OrderBookLevel;
   type: 'buy' | 'sell';
-  // isMobile 屬性不再需要從父組件傳遞
 }
 
 const props = defineProps<Props>();
@@ -55,14 +54,10 @@ const { isMobileMD, isMobileSM, isMobileXS } = useBreakpoint();
 
 // 用於格式化 total 的函數 (保留千分位)
 const formatNumber = (num: number) => {
-  if (isMobileXS.value && num > 1000) {
-    return (num / 1000).toFixed(1) + 'K';
-  }
-  if (isMobileSM.value && num > 10000) {
-    return (num / 1000).toFixed(1) + 'K';
-  }
-  if (isMobileMD.value && num > 1000000) {
+  if (num >= 1000000) {
     return (num / 1000000).toFixed(1) + 'M';
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'K';
   }
   
   return num.toLocaleString('en-US', { 
@@ -93,6 +88,8 @@ const barColor = computed(() => {
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  min-height: unset;
+  height: auto;
 }
 
 .order-book-row:hover {
@@ -112,6 +109,7 @@ const barColor = computed(() => {
   width: 100%;
   position: relative;
   z-index: 2;
+  align-items: center;
 }
 
 .price-cell, .size-cell, .total-cell {
@@ -161,9 +159,9 @@ const barColor = computed(() => {
 }
 
 @keyframes flashGreen {
-  0% { background-color: transparent; }
-  50% { background-color: rgba(0, 177, 93, 0.5); }
-  100% { background-color: transparent; }
+  0% { transform: scale(1); background-color: transparent; }
+  50% { transform: scale(1.02); background-color: rgba(0, 177, 93, 0.5); }
+  100% { transform: scale(1); background-color: transparent; }
 }
 
 @keyframes flashRed {
@@ -183,17 +181,17 @@ const barColor = computed(() => {
 /* 行動裝置樣式 */
 .mobile-row {
   padding: 5px 12px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .small-mobile-row {
   padding: 4px 10px;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .xs-mobile-row {
   padding: 3px 8px;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 /* 小型行動裝置 */
@@ -210,6 +208,10 @@ const barColor = computed(() => {
 
 /* 處理極小螢幕 */
 @media (max-width: 320px) {
+  .order-book-row {
+    padding: 2px 8px;
+  }
+
   .mobile-row {
     padding: 2px 8px;
     font-size: 10px;

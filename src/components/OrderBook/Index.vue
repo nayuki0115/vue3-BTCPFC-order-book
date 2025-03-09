@@ -21,13 +21,17 @@
       />
     </div>
     
-    <div class="last-price-container">
-      <LastPrice
-        v-if="lastPrice"
-        :price="lastPrice"
-        :previous-price="previousLastPrice"
-      />
-    </div>
+    <div class="price-separator"></div>
+  
+  <div class="last-price-container">
+    <LastPrice
+      v-if="lastPrice"
+      :price="lastPrice"
+      :previous-price="previousLastPrice"
+    />
+  </div>
+  
+  <div class="price-separator"></div>
     
     <div class="order-book-buys">
       <OrderBookRow
@@ -74,11 +78,16 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { isMobileMD, isMobileSM, isMobileXS } = useBreakpoint();
+
+const isMobile = computed(() => {
+  return isMobileMD.value || isMobileSM.value || isMobileXS.value;
+})
+
 const visibleRowCount = computed(() => {
-  if (isMobileXS.value) return 5;
-  if (isMobileSM.value) return 7;
-  if (isMobileMD.value) return 8;
-  return 10; // 默認/桌面版顯示行數
+  if (isMobileXS.value) return 4;
+  if (isMobileSM.value) return 5;
+  if (isMobileMD.value) return 6;
+  return 8; // 默認/桌面版顯示行數
 });
 
 // 限制顯示的訂單數量
@@ -102,7 +111,7 @@ const limitedBuyOrders = computed(() => {
   border-radius: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  font-family: 'Arial', sans-serif;
+  font-size: min(16px, 4vw);
 }
 
 .order-book-title {
@@ -119,6 +128,7 @@ const limitedBuyOrders = computed(() => {
   font-size: 14px;
   color: #8698aa;
   border-bottom: 1px solid rgba(134, 152, 170, 0.2);
+  flex-wrap: nowrap;
 }
 
 .header-cell {
@@ -130,10 +140,17 @@ const limitedBuyOrders = computed(() => {
   text-align: left;
 }
 
-.order-book-sells, .order-book-buys {
+.order-book-sells {
+  margin-bottom: 10px; /* 添加底部間距 */
+}
+
+.order-book-buys {
+  margin-top: 10px; /* 添加頂部間距 */
+}
+
+/* .order-book-sells, .order-book-buys {
   max-height: 240px;
   overflow-y: auto;
-  /* 確保滾動平滑 */
   scrollbar-width: thin;
   scrollbar-color: rgba(134, 152, 170, 0.3) transparent;
 }
@@ -147,7 +164,7 @@ const limitedBuyOrders = computed(() => {
 .order-book-buys::-webkit-scrollbar-thumb {
   background-color: rgba(134, 152, 170, 0.3);
   border-radius: 4px;
-}
+} */
 
 .last-price-container {
   padding: 10px 16px;
@@ -156,6 +173,13 @@ const limitedBuyOrders = computed(() => {
   border-top: 1px solid rgba(134, 152, 170, 0.2);
   border-bottom: 1px solid rgba(134, 152, 170, 0.2);
   background-color: #0F1622;
+  position: relative;
+  z-index: 10;
+  margin: 5px 0;
+}
+.price-separator {
+  height: 5px;
+  background-color: transparent;
 }
 
 /* 平板裝置樣式 */
@@ -167,9 +191,34 @@ const limitedBuyOrders = computed(() => {
   .order-book-sells, .order-book-buys {
     max-height: 200px;
   }
+
+  .order-book-sells {
+    margin-bottom: 15px;
+  }
+  
+  .order-book-buys {
+    margin-top: 15px;
+  }
+
+  .last-price-container {
+    margin: 8px 0; /* 在平板上增加更多空間 */
+  }
+
+  .price-separator {
+    height: 8px;
+  }
 }
 
 /* 行動裝置樣式 */
+@media (max-width: 768px) {
+  .last-price-container {
+    margin: 10px 0; /* 在手機上進一步增加空間 */
+  }
+
+  .price-separator {
+    height: 10px;
+  }
+}
 .mobile-view {
   font-size: 14px;
 }
@@ -248,6 +297,11 @@ const limitedBuyOrders = computed(() => {
 
 /* 處理極小螢幕 */
 @media (max-width: 320px) {
+  .order-book {
+    max-width: 100%; 
+    margin: 0; 
+  }
+
   .order-book-title {
     font-size: 14px;
     padding: 8px;
@@ -255,6 +309,7 @@ const limitedBuyOrders = computed(() => {
   
   .order-book-header {
     font-size: 11px;
+    padding: 5px 8px;
   }
   
   .order-book-sells, .order-book-buys {

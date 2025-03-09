@@ -1,4 +1,3 @@
-// src/utils/breakpoints.ts
 export const breakpoints = {
   mobileXS: 320,  // 極小螢幕
   mobileSM: 480,  // 小型行動裝置
