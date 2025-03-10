@@ -58,7 +58,10 @@
 - API 文件：[Public Trade Fills](https://btsecom.github.io/docs/futures/en/#public-trade-fills)
 - 說明：使用陣列中的第一個價格作為最新價格
 
-### 樣式 說明
+## 畫面說明
+![localhost_5173_](https://github.com/user-attachments/assets/67c7d548-b9e5-4fd4-a089-63aa5d57a030)
+
+### 樣式說明
 - 背景顏色：`#131B29`
 - 預設文字顏色：`#F0F4F8`
 - 報價表頭文字顏色：`#8698aa`
@@ -69,6 +72,13 @@
 - 賣單累積總數百分比條顏色：`rgba(255, 90, 90, 0.12)`
 - 動畫閃爍綠色背景顏色：`rgba(0, 177, 93, 0.5)`
 - 動畫閃爍紅色背景顏色：`rgba(255, 91, 90, 0.5)`
+### RWD
+#### breakpoint
+- 桌面裝置 (>=992px)：顯示 8 筆訂單
+- 平板裝置 (<992px)：顯示 7 筆訂單
+- 一般行動裝置 (<768px)：顯示 6 筆訂單
+- 小型行動裝置 (<480px)：顯示 5 筆訂單
+- 極小行動裝置 (<320px)：顯示 4 筆訂單
 
 ## 使用技術
 ![image](https://img.shields.io/badge/vue-v3.5.13-brightgreen.svg) ![image](https://img.shields.io/badge/typescript-blue.svg)  
