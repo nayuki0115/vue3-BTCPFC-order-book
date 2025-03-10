@@ -54,12 +54,6 @@ const { isMobileMD, isMobileSM, isMobileXS } = useBreakpoint();
 
 // 用於格式化 total 的函數 (保留千分位)
 const formatNumber = (num: number) => {
-  if (num >= 1000000) {
-    return (num / 1000000).toFixed(1) + 'M';
-  } else if (num >= 1000) {
-    return (num / 1000).toFixed(1) + 'K';
-  }
-  
   return num.toLocaleString('en-US', { 
     minimumFractionDigits: 0, 
     maximumFractionDigits: 0
